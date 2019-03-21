@@ -4,7 +4,7 @@ end_of_line = lf
 indent_style = space
 insert_final_newline = true
 trim_trailing_whitespace = true
-continuation_indent_size = 4
+continuation_indent_size = 8
 [.java]
 indent_size = 4
 spaces_around_operators=true
