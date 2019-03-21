@@ -10,14 +10,14 @@ import java.net.InetAddress;
 
 @Logger
 @Service
-public class ServerApplicationService {
-    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(ServerApplicationService.class);
+public class PlayerConnectionListener {
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(PlayerConnectionListener.class);
     @Autowired
-    public void run() throws IOException {
+    public void openConnection() throws IOException {
         log.info("connecting");
         DatagramSocket socket = new DatagramSocket(1234);
         boolean listen = true;
-        while (listen) {
+        while(listen) {
             byte buffer[] = new byte[1024];
             DatagramPacket packet = new DatagramPacket(buffer, 1024);
             socket.receive(packet);
