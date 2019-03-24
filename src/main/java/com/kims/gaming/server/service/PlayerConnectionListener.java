@@ -1,7 +1,9 @@
 package com.kims.gaming.server.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Bean;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -11,23 +13,24 @@ import java.net.InetAddress;
 @Slf4j
 @Service
 public class PlayerConnectionListener {
-    @Bean
+    @Autowired
     private void openConnection() throws IOException {
         log.info("Starting....");
-        byte buffer[] = new byte[1024];
+        JSONObject json = new JSONObject();
+        JSONParser jsonParser = new JSONParser();
         DatagramSocket socket = new DatagramSocket(1234);
-        DatagramPacket packet = new DatagramPacket(buffer, 1024);
         boolean listen = true;
         while(listen) {
+            byte buffer[] = new byte[256];
+            DatagramPacket packet = new DatagramPacket(buffer, 256);
             socket.receive(packet);
             String msg = new String(packet.getData());
             System.out.println("Cleint : " + msg);
-            String text = "connected";
-            buffer = text.getBytes();
-            packet = new DatagramPacket(buffer, 1024);
+            json.put("status", "connnected");
+            byte buf[] = json.toJSONString().getBytes();
             InetAddress address = packet.getAddress();
             int port = packet.getPort();
-            packet = new DatagramPacket(buffer, buffer.length, address, port);
+            packet = new DatagramPacket(buf, buf.length, address, port);
             socket.send(packet);
         }
     }
