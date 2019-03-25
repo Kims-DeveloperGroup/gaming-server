@@ -5,6 +5,8 @@ mvnw
 mvnw.cmd
 /resources/
 /.mvn/
+.jar
+/lib/
 
 ### STS ###
 .apt_generated
