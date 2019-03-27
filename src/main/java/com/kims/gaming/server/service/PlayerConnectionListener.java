@@ -18,23 +18,22 @@ public class PlayerConnectionListener {
         JSONObject json = new JSONObject();
         DatagramSocket socket = new DatagramSocket(1234);
         boolean listen = true;
-        while(listen) {
+        while (listen) {
             byte buffer[] = new byte[256];
-            DatagramPacket receivePacket = new DatagramPacket(buffer, 256);
-            socket.receive(receivePacket);
-            String msg = new String(receivePacket.getData());
-            log.info(msg);
+            DatagramPacket RPacket = new DatagramPacket(buffer, 256);
+            socket.receive(RPacket);
+            String msg = new String(RPacket.getData());
+            log.info("connected with Client..\nfrom. Client : " + msg);
             json.put("status", "connnected");
-            byte buf[] = json.toJSONString().getBytes();
-            InetAddress address = receivePacket.getAddress();
-            int port = receivePacket.getPort();
-            DatagramPacket sendPacket = new DatagramPacket(buf, buf.length, address, port);
-            socket.send(sendPacket);
-            if (receivePacket == null) {
-                break;
+            byte buffer2[] = json.toJSONString().getBytes();
+            InetAddress address = RPacket.getAddress();
+            int port = RPacket.getPort();
+            DatagramPacket SPacket = new DatagramPacket(buffer2, buffer2.length, address, port);
+            socket.send(SPacket);
+            if (msg == "disconnected") {
+                log.info("server was disconnected");
+                socket.close();
             }
         }
-
     }
 }
-
