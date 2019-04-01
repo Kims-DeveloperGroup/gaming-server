@@ -2,6 +2,7 @@ package com.kims.gaming.server.service;
 
 import com.kims.gaming.server.ReplyDomain;
 import com.kims.gaming.server.ReplyRepo;
+import com.kims.gaming.server.ReplyServicelmpl;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import java.util.List;
 public class PlayerConnectionListener {
     @Autowired
     private ReplyRepo replyRepo;
+    private ReplyServicelmpl replyServicelmpl;
     @Autowired
     private void openConnection() throws IOException {
         log.info("Starting....");

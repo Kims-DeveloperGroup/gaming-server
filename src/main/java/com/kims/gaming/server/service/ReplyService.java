@@ -11,6 +11,4 @@ public interface ReplyService {
     public List<ReplyDomain> insert(ReplyDomain reply);
     public List<ReplyDomain> update(ReplyDomain reply);
     public List<ReplyDomain> delete(ReplyDomain reply);
-
-
 }

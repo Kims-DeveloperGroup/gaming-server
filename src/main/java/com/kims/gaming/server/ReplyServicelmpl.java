@@ -33,10 +33,8 @@ public class ReplyServicelmpl {
         Update update = new Update();
         update.set("userName", reply.getUserName());
         update.set("contents", reply.getContents());
-
         UpdateResult updateResult = mongoTemplate.updateFirst(query, update, ReplyDomain.class);
         log.info(updateResult.toString());
-
         return replyRepo.findByBno(bno);
     }
 }
