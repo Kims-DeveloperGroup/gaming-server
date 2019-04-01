@@ -1,5 +1,7 @@
 package com.kims.gaming.server.service;
 
+import com.kims.gaming.server.ReplyDomain;
+import com.kims.gaming.server.ReplyRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,13 +10,19 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.util.List;
 
 @Slf4j
 @Service
 public class PlayerConnectionListener {
     @Autowired
+    private ReplyRepo replyRepo;
+    @Autowired
     private void openConnection() throws IOException {
         log.info("Starting....");
+        List<ReplyDomain> all = replyRepo.findAll();
+        log.info(String.valueOf(all));
+
         JSONObject json = new JSONObject();
         DatagramSocket socket = new DatagramSocket(1234);
         boolean listen = true;
