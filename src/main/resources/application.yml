@@ -1,9 +1,8 @@
 ##Mongo-DB##
-
 spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017
-      database: reply
-      username: ssooni526
-      password: ssooni
+      database: gaming
+      username: devzucca
+      password: zucca123

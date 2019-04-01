@@ -4,7 +4,7 @@ import com.kims.gaming.server.ReplyDomain;
 import java.util.List;
 
 public interface ReplyService {
-    public List<ReplyDomain> findbyBno(int bno);
+    public List<ReplyDomain> findbyPort(int port);
     public List<ReplyDomain> findAll();
     public List<ReplyDomain> findByCondition();
 

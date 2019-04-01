@@ -18,7 +18,6 @@ import java.util.List;
 public class PlayerConnectionListener {
     @Autowired
     private ReplyRepo replyRepo;
-    private ReplyServicelmpl replyServicelmpl;
     @Autowired
     private void openConnection() throws IOException {
         log.info("Starting....");

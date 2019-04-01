@@ -9,8 +9,8 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
+
 @Slf4j
 @Service
 public class ReplyServicelmpl {
@@ -20,21 +20,19 @@ public class ReplyServicelmpl {
     private MongoTemplate mongoTemplate;
 
     public List<ReplyDomain> insert(ReplyDomain reply) {
-        int bno = reply.getBno();
+        int port = reply.getPort();
         mongoTemplate.insert(reply);
-        return replyRepo.findByBno(bno);
+        return replyRepo.findByPort(port);
     }
-
     public List<ReplyDomain> update(ReplyDomain reply) {
-        int bno = reply.getBno();
+        int port = reply.getPort();
         ObjectId id = new ObjectId(reply.getId());
         Query query = new Query();
         query.addCriteria(Criteria.where("_id").is(id));
         Update update = new Update();
-        update.set("userName", reply.getUserName());
-        update.set("contents", reply.getContents());
+        update.set("userName ", reply.getUserName());
         UpdateResult updateResult = mongoTemplate.updateFirst(query, update, ReplyDomain.class);
         log.info(updateResult.toString());
-        return replyRepo.findByBno(bno);
+        return replyRepo.findByPort(port);
     }
 }
