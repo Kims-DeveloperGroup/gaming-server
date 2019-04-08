@@ -1,4 +1,4 @@
-package com.kims.gaming.server;
+package com.kims.gaming.server.Config;
 
 import com.mongodb.MongoClient;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,18 +23,14 @@ public class MongoConfig extends AbstractMongoConfiguration {
     protected String getDatabaseName() {
         return database;
     }
-    /*   ------This method is deprecated(ServerAddress) --------
-    public Mongo mongo() throws Exception {
-        MongoCredential credential = MongoCredential.createCredential(userName, database, password.toCharArray());
-        return new MongoClient(new ServerAddress("localhost", 27107), Arrays.asList(credential));
-    }*/
 
     @Override
     public MongoClient mongoClient() {
         return new MongoClient("localhost", 27017);
     }
 
-    public @Bean MongoTemplate mongoTemplate() throws Exception {
+    @Bean
+    public MongoTemplate mongoTemplate() throws Exception {
         return new MongoTemplate(mongoClient(), database);
     }
 }

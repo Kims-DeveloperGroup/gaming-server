@@ -1,5 +1,7 @@
-package com.kims.gaming.server;
+package com.kims.gaming.server.service.impl;
 
+import com.kims.gaming.server.MemberRepo;
+import com.kims.gaming.server.domain.MemberDomain;
 import com.mongodb.client.result.UpdateResult;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
@@ -13,26 +15,28 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class ReplyServicelmpl {
+public class MemberServicelmpl {
     @Autowired
-    private ReplyRepo replyRepo;
-    @Autowired
+    private MemberRepo memberRepo;
     private MongoTemplate mongoTemplate;
 
-    public List<ReplyDomain> insert(ReplyDomain reply) {
-        int port = reply.getPort();
-        mongoTemplate.insert(reply);
-        return replyRepo.findByPort(port);
+    public List<MemberDomain> insert(MemberDomain member) {
+        int port = member.getPort();
+        mongoTemplate.insert(member);
+        return memberRepo.findByPort(port);
     }
-    public List<ReplyDomain> update(ReplyDomain reply) {
-        int port = reply.getPort();
-        ObjectId id = new ObjectId(reply.getId());
+    public List<MemberDomain> update(MemberDomain member) {
+
+        ObjectId id = new ObjectId(member.getId());
         Query query = new Query();
         query.addCriteria(Criteria.where("_id").is(id));
+
         Update update = new Update();
-        update.set("userName ", reply.getUserName());
-        UpdateResult updateResult = mongoTemplate.updateFirst(query, update, ReplyDomain.class);
+        update.set("userName ", member.getUserName());
+
+        UpdateResult updateResult = mongoTemplate.updateFirst(query, update, MemberDomain.class);
         log.info(updateResult.toString());
-        return replyRepo.findByPort(port);
+        int port = member.getPort();
+        return memberRepo.findByPort(port);
     }
 }

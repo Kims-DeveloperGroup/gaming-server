@@ -1,13 +1,14 @@
-package com.kims.gaming.server;
+package com.kims.gaming.server.domain;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import java.io.Serializable;
 
+/* DTO(Data Transfer Object)
+    */
 @Data
 @Document(collection="gaming")
-public class ReplyDomain implements Serializable {
+public class MemberDomain {
     private static final long serialVersionUID = 1L;
 
     @Id
