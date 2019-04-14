@@ -12,7 +12,9 @@ public class PlayerConnectionListener {
 
     @Autowired
     private void openConnection() throws Exception {
-        memberRepoService.getUserInfo();
+
+        memberRepoService.getMemberInfo();
         memberRepoService.connection();
+
     }
 }
