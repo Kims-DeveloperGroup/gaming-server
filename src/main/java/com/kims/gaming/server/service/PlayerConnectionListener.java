@@ -32,8 +32,7 @@ public class PlayerConnectionListener {
                                                 log.info("Inbound packet {} from {}", event, packet.sender());
                                                 return new DatagramPacket(packet.content(), packet.sender());
                                             } else {
-                                                return Mono.error(
-                                                        new Exception("Unexpected type of the message: " + o));
+                                                return Mono.error(new Exception("Unexpected type of the message: " + o));
                                             }
                                         })));
         log.info("Connection Listener has been initialized. {}:{}", host, port);
@@ -44,7 +43,7 @@ public class PlayerConnectionListener {
     }
 
     private GameEvent deserializePacketToGameEvent(DatagramPacket packet) {
-        byte[] bytes = new byte[packet.content().writerIndex()];
+        byte[] bytes = new byte[packet.content().readableBytes()];
         ByteBuf content = packet.content();
         while (content.isReadable()) {
             bytes[content.readerIndex()] = content.readByte();
