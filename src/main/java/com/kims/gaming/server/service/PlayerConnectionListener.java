@@ -1,19 +1,22 @@
 package com.kims.gaming.server.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kims.gaming.server.domain.GameEvent;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.socket.DatagramPacket;
-import io.netty.util.CharsetUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 import reactor.netty.Connection;
 import reactor.netty.udp.UdpServer;
 
+import java.io.IOException;
+
 @Slf4j
 @Service
 public class PlayerConnectionListener {
     private final UdpServer udpServer;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public PlayerConnectionListener(String host,  int port) {
         udpServer = UdpServer.create().host(host).port(port)
@@ -24,10 +27,10 @@ public class PlayerConnectionListener {
                                 in.receiveObject()
                                         .map(o -> {
                                             if (o instanceof DatagramPacket) {
-                                                DatagramPacket p = (DatagramPacket) o;
-                                                log.info("inbound packet from {}", p.sender());                                                log.info("sender: {}", p.sender());
-                                                ByteBuf buf = Unpooled.copiedBuffer("hello", CharsetUtil.UTF_8);
-                                                return new DatagramPacket(buf, p.sender());
+                                                DatagramPacket packet = (DatagramPacket) o;
+                                                GameEvent event = deserializePacketToGameEvent(packet);
+                                                log.info("Inbound packet {} from {}", event, packet.sender());
+                                                return new DatagramPacket(packet.content(), packet.sender());
                                             } else {
                                                 return Mono.error(
                                                         new Exception("Unexpected type of the message: " + o));
@@ -38,5 +41,21 @@ public class PlayerConnectionListener {
 
     public Connection openConnection() {
         return udpServer.bind().block();
+    }
+
+    private GameEvent deserializePacketToGameEvent(DatagramPacket packet) {
+        byte[] bytes = new byte[packet.content().writerIndex()];
+        ByteBuf content = packet.content();
+        while (content.isReadable()) {
+            bytes[content.readerIndex()] = content.readByte();
+        }
+        GameEvent gameEvent;
+        try {
+            gameEvent = objectMapper.readValue(bytes, GameEvent.class);
+        } catch (IOException e) {
+            log.error("Fail to read data into game event", e);
+            gameEvent = new GameEvent(GameEvent.EventType.EXCEPTION);
+        }
+        return gameEvent;
     }
 }
